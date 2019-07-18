@@ -36,7 +36,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="S6 CSE"/>
+                android:text="sem dept"
+                android:id="@+id/sem"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"

@@ -24,7 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class Dash extends Fragment {
-    private TextView name;
+    private TextView name,dept;
     private Button logout;
     String uid;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -34,6 +34,7 @@ public class Dash extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         View view  = inflater.inflate(R.layout.dash,container, false);
         name = (TextView)view.findViewById(R.id.name);
+        dept = (TextView)view.findViewById(R.id.sem);
         logout = view.findViewById(R.id.logout);
 
 
@@ -61,6 +62,7 @@ public class Dash extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         name.setText(document.getString("Name"));
+                        dept.setText("S"+document.getString("sem")+"  "+document.getString("dept"));
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                     } else {
                         Log.d(TAG, "No such document");

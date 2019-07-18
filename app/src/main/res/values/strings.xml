@@ -7,4 +7,6 @@
     <string name="sign_in_cancelled">Sign In cancelled</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="unknown_error">Unkown error</string>
+    <string name="channel_name">MyNotification</string>
+    <string name="channel_description"></string>
 </resources>
