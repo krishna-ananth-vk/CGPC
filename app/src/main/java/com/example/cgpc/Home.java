@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -30,12 +32,14 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 public class Home extends Fragment {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private ArrayList<String> icons = new ArrayList<>();
     private ArrayList<String> names = new ArrayList<String>();
     private ArrayList<String> dept= new ArrayList<String>();
     private ArrayList<String> cgpa= new ArrayList<String>();
     private ArrayList<String> date = new ArrayList<String>();
     private Button applyB ;
+
 
     private ListView listView;
 

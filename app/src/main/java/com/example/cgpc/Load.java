@@ -1,6 +1,7 @@
 package com.example.cgpc;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -67,6 +68,7 @@ public class Load extends Activity {
                 }
                 else {
                     signInUser(e,p);
+
                 }
 
             }
@@ -74,6 +76,11 @@ public class Load extends Activity {
 
     }
     void signInUser(String e,String p){
+        final ProgressDialog progressDialog = new ProgressDialog(Load.this,
+                R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Authenticating...");
+        progressDialog.show();
         mAuth.signInWithEmailAndPassword(e, p)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -86,6 +93,7 @@ public class Load extends Activity {
 
                         } else {
                             // If sign in fails, display a message to the user.
+                            progressDialog.cancel();
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(Load.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
