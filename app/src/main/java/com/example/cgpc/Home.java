@@ -15,11 +15,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -32,12 +37,16 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 public class Home extends Fragment {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    private ArrayList<String> icons = new ArrayList<>();
-    private ArrayList<String> names = new ArrayList<String>();
-    private ArrayList<String> dept= new ArrayList<String>();
-    private ArrayList<String> cgpa= new ArrayList<String>();
-    private ArrayList<String> date = new ArrayList<String>();
+    String uid = user.getUid();
+    Float ucgpa, bl;
+    private FirebaseFirestore data = FirebaseFirestore.getInstance();
+    private ArrayList<String> id = new ArrayList<>();
+    private ArrayList<String> names = new ArrayList<>();
+    private ArrayList<String> dept = new ArrayList<>();
+    private ArrayList<Float> cgpa = new ArrayList<>();
+    private ArrayList<String> date = new ArrayList<>();
     private Button applyB ;
 
 
@@ -49,6 +58,18 @@ public class Home extends Fragment {
         View view  = inflater.inflate(R.layout.home,container, false);
         listView = (ListView) view.findViewById(R.id.listView);
 
+        DocumentReference documentReference = data.collection("user").document(uid);
+        final ListenerRegistration registration = documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@javax.annotation.Nullable DocumentSnapshot documentSnapshot, @javax.annotation.Nullable FirebaseFirestoreException e) {
+                if (documentSnapshot != null) {
+                    ucgpa = Float.parseFloat(documentSnapshot.getString("cgpa"));
+                    System.out.println("test------------------");
+                }
+            }
+        });
+
+
         db.collection("company").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
@@ -56,25 +77,26 @@ public class Home extends Fragment {
                 dept.clear();
                 cgpa.clear();
                 date.clear();
-                icons.clear();
+                id.clear();
                 for(QueryDocumentSnapshot document : queryDocumentSnapshots){
 
                     if(document.exists()){
                         names.add(document.getString("name"));
-                        icons.add(document.getString("img"));
+                        id.add(document.getId());
                         dept.add("LPA : "+document.getString("LPA"));
-                        cgpa.add("CGPA: "+document.getString("CGPA"));
-                        date.add("Date: "+document.getString("date"));
+                        cgpa.add(Float.parseFloat(document.getString("gp")));
 
-                        Log.d(TAG, document.getId() + "=>" +document.getData());
                     }
                     else {
                         Log.d(TAG,"failed");
                     }
                 }
                 createList();
+
+                registration.remove();
             }
         });
+
 
         return view;
 
@@ -86,13 +108,13 @@ public class Home extends Fragment {
         super.onStart();
 
 
-
-
-
     }
     void createList(){
-        ItemData adapter = new ItemData(getActivity(),names,dept,cgpa,date,icons);
+
+        ItemData adapter = new ItemData(getActivity(), names, dept, cgpa, id, uid, ucgpa);
+
         listView.setAdapter(adapter);
+
 
     }
 }

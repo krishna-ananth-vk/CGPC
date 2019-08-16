@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,17 +25,19 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class Dash extends Fragment {
-    private TextView name,dept;
-    private Button logout;
+    private TextView name, dept, sem;
+    private CardView logout;
     String uid;
+
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         View view  = inflater.inflate(R.layout.dash,container, false);
-        name = (TextView)view.findViewById(R.id.name);
-        dept = (TextView)view.findViewById(R.id.sem);
+        name = view.findViewById(R.id.name);
+        sem = view.findViewById(R.id.sem);
+        dept = view.findViewById(R.id.dept);
         logout = view.findViewById(R.id.logout);
 
 
@@ -43,7 +46,9 @@ public class Dash extends Fragment {
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
 
-                startActivity(new Intent(getActivity(),Load.class));
+                startActivity(new Intent(getActivity(), Load.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                getActivity().finish();
+
 
             }
         });
@@ -62,7 +67,8 @@ public class Dash extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         name.setText(document.getString("Name"));
-                        dept.setText("S"+document.getString("sem")+"  "+document.getString("dept"));
+                        sem.setText("S" + document.getString("sem"));
+                        dept.setText(document.getString("dept"));
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                     } else {
                         Log.d(TAG, "No such document");

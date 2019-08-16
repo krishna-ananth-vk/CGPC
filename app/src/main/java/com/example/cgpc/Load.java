@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,15 +23,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class Load extends Activity {
     private static final int RC_SIGN_IN = 123;
-    EditText email;
-    EditText password;
-    Button login;
+    TextInputEditText email;
+    TextInputEditText password;
+    TextView login;
     String e,p;
+
     private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,8 @@ public class Load extends Activity {
                 }
                 else {
                     signInUser(e,p);
+                    login.setText("Logging in");
+                    login.setEnabled(false);
 
                 }
 
@@ -89,10 +95,15 @@ public class Load extends Activity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(Load.this,MainActivity.class));
+                            login.setEnabled(true);
+                            login.setText("Logging in");
+                            startActivity(new Intent(Load.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                            finish();
 
                         } else {
                             // If sign in fails, display a message to the user.
+                            login.setEnabled(true);
+                            login.setText("Logging in");
                             progressDialog.cancel();
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(Load.this, "Authentication failed.",
