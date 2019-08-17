@@ -6,3 +6,7 @@ They can also get information about previous interviews like no of students appe
 
 Placement cell volunteers can use the app to update the details of inrterviews and inform the students
 
+##Installing
+
+download [here](https://github.com/the-code-builder/CGPC/blob/master/app/build/outputs/apk/debug/app-debug.apk)
+
