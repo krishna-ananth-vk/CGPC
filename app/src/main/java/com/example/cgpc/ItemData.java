@@ -69,7 +69,7 @@ public class ItemData  extends ArrayAdapter {
         View rowView = inflater.inflate(R.layout.list_item,null,true);
         flag[position] = false;
 
-        final DocumentReference documentReference = db.collection("company").document(this.id.get(position));
+        final DocumentReference docRef = db.collection("company").document(this.id.get(position));
 
         TextView title = rowView.findViewById(R.id.title);
         ImageView icon = rowView.findViewById(R.id.icon);
@@ -84,7 +84,7 @@ public class ItemData  extends ArrayAdapter {
 
         }
 
-        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 if (documentSnapshot != null) {
@@ -97,7 +97,7 @@ public class ItemData  extends ArrayAdapter {
                         applyB.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                documentReference.update("student", FieldValue.arrayUnion(uid));
+                                docRef.update("student", FieldValue.arrayUnion(uid));
                             }
                         });
                     }
