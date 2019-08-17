@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,8 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class Dash extends Fragment {
-    private TextView name, dept, sem;
-    private CardView logout;
+    private TextView name, dept, sem, gender, mt, dob, prg, cgpa;
     String uid;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -38,7 +37,12 @@ public class Dash extends Fragment {
         name = view.findViewById(R.id.name);
         sem = view.findViewById(R.id.sem);
         dept = view.findViewById(R.id.dept);
-        logout = view.findViewById(R.id.logout);
+        gender = view.findViewById(R.id.gender);
+        mt = view.findViewById(R.id.mt);
+        dob = view.findViewById(R.id.dob);
+        cgpa = view.findViewById(R.id.cgpa);
+        prg = view.findViewById(R.id.prg);
+        CardView logout = view.findViewById(R.id.logout);
 
 
         logout.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +63,7 @@ public class Dash extends Fragment {
         return view;
     }
     void getUserInfo(){
-        DocumentReference docRef = db.collection("user").document(uid);
+        final DocumentReference docRef = db.collection("user").document(uid);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -69,7 +73,12 @@ public class Dash extends Fragment {
                         name.setText(document.getString("Name"));
                         sem.setText("S" + document.getString("sem"));
                         dept.setText(document.getString("dept"));
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        gender.setText(document.getString("gender"));
+                        dob.setText(document.getString("dob"));
+                        cgpa.setText(document.getString("cgpa"));
+                        prg.setText(document.getString("program"));
+                        mt.setText(document.getString("mt"));
+
                     } else {
                         Log.d(TAG, "No such document");
                     }
