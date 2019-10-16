@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,7 +26,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class Dash extends Fragment {
-    private TextView name, dept, sem, gender, mt, dob, prg, cgpa;
+    private TextView name, dept, gender, mt, dob, prg, cgpa;
+    private CardView editBtn;
     String uid;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -34,8 +36,8 @@ public class Dash extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         View view  = inflater.inflate(R.layout.dash,container, false);
+        editBtn = view.findViewById(R.id.editbtn);
         name = view.findViewById(R.id.name);
-        sem = view.findViewById(R.id.sem);
         dept = view.findViewById(R.id.dept);
         gender = view.findViewById(R.id.gender);
         mt = view.findViewById(R.id.mt);
@@ -56,6 +58,12 @@ public class Dash extends Fragment {
 
             }
         });
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), EditProfile.class));
+            }
+        });
 
         uid = user.getUid();
         getUserInfo();
@@ -71,7 +79,6 @@ public class Dash extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         name.setText(document.getString("Name"));
-                        sem.setText("S" + document.getString("sem"));
                         dept.setText(document.getString("dept"));
                         gender.setText(document.getString("gender"));
                         dob.setText(document.getString("dob"));
