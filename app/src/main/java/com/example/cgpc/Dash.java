@@ -27,7 +27,7 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class Dash extends Fragment {
     private TextView name, dept, gender, mt, dob, prg, cgpa;
-    private CardView editBtn;
+    private CardView editBtn, grades;
     String uid;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -45,6 +45,7 @@ public class Dash extends Fragment {
         cgpa = view.findViewById(R.id.cgpa);
         prg = view.findViewById(R.id.prg);
         CardView logout = view.findViewById(R.id.logout);
+        grades = view.findViewById(R.id.grade);
 
 
         logout.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +59,13 @@ public class Dash extends Fragment {
 
             }
         });
+        grades.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), Grades.class));
+            }
+        });
+
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

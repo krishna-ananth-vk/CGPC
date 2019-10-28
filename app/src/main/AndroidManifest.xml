@@ -26,7 +26,19 @@
 
         </activity>
 
-        <activity android:name=".EditProfile">
+        <activity
+            android:name=".EditProfile"
+            android:theme="@style/AppTheme">
+
+        </activity>
+        <activity
+            android:name=".Noti"
+            android:theme="@style/AppTheme">
+
+        </activity>
+        <activity
+            android:name=".Grades"
+            android:theme="@style/AppTheme">
 
         </activity>
 

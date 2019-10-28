@@ -7,8 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import android.view.Menu;
 import android.view.MenuItem;
 
 
@@ -17,7 +19,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private ActionBar toolbar;
-    float cgpa;
+
 
 
 
@@ -36,10 +38,7 @@ public class MainActivity extends AppCompatActivity {
                     toolbar.setTitle("Dash");
                     loadFragment(new Dash());
                     return true;
-                case R.id.navigation_notifications:
-                    toolbar.setTitle("Notification");
-                    loadFragment(new Notification());
-                    return true;
+
             }
             return false;
         }
@@ -74,5 +73,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.notification, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.noti:
+                startActivity(new Intent(this, Noti.class));
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
